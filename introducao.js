@@ -1,0 +1,1 @@
+console.log('Hello World') // to run: node app.js
