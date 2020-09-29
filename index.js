@@ -5,7 +5,9 @@ const app = express()
 app.set('view engine', 'ejs')
 
 app.get('/', (req, res) => {
-    res.render("index") // nome do arquivo .ejs dentro de views
+    res.render("index", {
+        nome: "Adriano Hardtke"
+    }) // index é nome do arquivo .ejs dentro de views
 })
 
 app.listen(8001, () => {
