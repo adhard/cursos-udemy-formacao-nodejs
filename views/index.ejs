@@ -4,10 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perguntas e Respostas</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <h1>Teste</h1>
     <hr />
     <p> <%= nome %> </p>
+    <% if(exibirMsg) { %>
+        <p>Mensagem erro</p>
+    <% } else { %>
+        <p>Mensagem sem erro</p>
+    <% } %>
+    </br>
+    </br>
+    <% produtos.forEach( produto => { %>
+        <p><%= produto.nome %> </p>
+        <p><%= produto.preco %> </p>
+        </br>
+    <% }) %>
 </body>
 </html>
