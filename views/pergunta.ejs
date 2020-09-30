@@ -7,6 +7,23 @@
         <h1><%= pergunta.title %></h1>
         <p><%= pergunta.description %></p>
         <hr>
+        <form action="/responder" method="POST">
+            <h3>Responda</h3>
+            <div class="form-group">
+                <label for="">Resposta</label>
+                <textarea name="corpo" cols="30" rows="10" class="form-control" placeholder="Sua resposta aqui"></textarea>
+            </div>
+            <input type="hidden" name="pergunta" value="<%= pergunta.id %>">
+            <button type="submit" class="btn btn-primary">Responder</button>
+        </form>
+        <hr>
+        <h3>Respostas</h3>
+        <hr>
+        <ul class="list-group">
+            <% respostas.forEach( resposta => { %>
+                <li class="list-group-item" style="margin-bottom: 1rem;"><%= resposta.corpo %></li>
+            <% }) %>
+        </ul>
     </div>
 </body>
 <%- include('partials/footer.ejs') %>
