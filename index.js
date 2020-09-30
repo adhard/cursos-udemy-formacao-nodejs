@@ -24,7 +24,9 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
-    Pergunta.findAll({ raw: true })
+    Pergunta.findAll({ raw: true, order: [
+        ['createdAt','DESC'] // OU ASC
+    ] })
         .then( (perguntas) => {
             res.render("index", { perguntas })
         })
@@ -43,6 +45,23 @@ app.post("/salvarpergunta", (req, res) => {
     })
     .then( () => {
         res.redirect("/") //redireciona para /
+    })
+})
+
+app.get('/pergunta/:id', (req, res) => {
+    const id = req.params.id;
+    Pergunta.findOne({
+        where: {
+            id //id da tabela == id da requisicao
+        }
+    }).then( pergunta => {
+        if(pergunta){
+            res.render('pergunta', {
+                pergunta
+            })
+        } else {
+            res.redirect('/')
+        }
     })
 })
 
