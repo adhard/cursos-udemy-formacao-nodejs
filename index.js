@@ -1,33 +1,49 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+const connection = require('./database/database')
+
+const Pergunta = require('./database/models/Pergunta')
+
+// Database
+connection.authenticate()
+    .then( ()=> {
+        console.log('Conexao do db OK')
+    })
+    .catch( (error) => {
+        console.log('Conexao do db erro: ' + error)
+    })
 
 // dizendo para o express usar o EJS como view engine
 app.set('view engine', 'ejs')
 
 app.use(express.static('public')) //permite ao nodejs utilizar arquivos estaticos (css, imgs, arquivos html...), "public" é o nome da pasta
 
+// body parser
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
+
 app.get('/', (req, res) => {
+    Pergunta.findAll({ raw: true })
+        .then( (perguntas) => {
+            res.render("index", { perguntas })
+        })
+})
 
-    const produtos = [
-        {
-            nome: 'notebook',
-            preco: 2000.00
-        },
-        {
-            nome: 'mouse',
-            preco: 150.00
-        },
-        {
-            nome: 'monitor',
-            preco: 1000.00
-        }
-    ]
+app.get('/perguntar', (req, res) => {
+    res.render("perguntar")
+})
 
-    res.render("index", {
-        nome: "Adriano Hardtke",
-        exibirMsg: false,
-        produtos
-    }) // index é nome do arquivo .ejs dentro de views
+app.post("/salvarpergunta", (req, res) => {
+    const titulo = req.body.titulo
+    const descricao = req.body.descricao
+    Pergunta.create({
+        title: titulo,
+        description: descricao
+    })
+    .then( () => {
+        res.redirect("/") //redireciona para /
+    })
 })
 
 app.listen(8001, () => {
