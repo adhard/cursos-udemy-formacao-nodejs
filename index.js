@@ -3,6 +3,14 @@ const app = express()
 const bodyParser = require('body-parser')
 const connection = require('./database/database')
 
+// Controllers
+const categoriesController = require('./categories/CategoriesController')
+const articlesController = require('./articles/ArticlesController')
+
+// Models
+const Article = require('./articles/Article')
+const Category = require('./categories/Category')
+
 // View Engine
 app.set('view engine','ejs')
 
@@ -20,7 +28,10 @@ connection.authenticate()
     })
     .catch((erro)=> {
         console.log('Erro ao conectar ao banco de dados:\n'+ erro)
-    })
+})
+
+app.use("/", categoriesController)
+app.use("/", articlesController)
 
 
 app.get('/', (req, res) => {

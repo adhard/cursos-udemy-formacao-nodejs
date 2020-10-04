@@ -1,0 +1,60 @@
+<%- include('../../partials/header.ejs') %>
+<body>
+    <%- include('../../partials/navbar.ejs') %>
+    <div class="container">
+        <hr>
+        <h2>Categorias</h2>
+        <a href="/admin/categories/new" class="btn btn-success">Criar nova categoria</a>
+        <hr>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Titulo</th>
+                    <th>Slug</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% categories.forEach(category => { %>
+                <tr>
+                    <td><%= category.id %></td>
+                    <td><%= category.title %></td>
+                    <td><%= category.slug %></td>
+                    <td>
+                        <form action="/admin/categories/edit/<%= category.id %>" method="GET" style="display: inline;">
+                            <input type="hidden" name="id" value="<%= category.id %>">
+                            <button class="btn btn-warning">Editar</button>
+                        </form>
+                        <form action="/categories/delete" method="POST" style="display: inline;" onsubmit="confirmDelete(event, this)">
+                            <input type="hidden" name="id" value="<%= category.id %>">
+                            <button class="btn btn-danger">Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+<%- include('../../partials/footer.ejs') %>
+
+<script>
+    function confirmDelete(event, form) {
+        const isConfirm = confirm("Deseja realmente excluir ?")
+
+        if(!isConfirm) { // caso nao confirme a deleção
+            event.preventDefault()
+        }
+        
+        /*
+            // outro metodo
+            if(isConfirm) { // caso confirme a deleção
+                form.submit()
+            } else { // caso nao confirme a deleção
+                event.preventDefault()
+            }
+
+        */
+    }
+</script>
